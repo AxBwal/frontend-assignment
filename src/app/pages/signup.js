@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { setToken } from '../utils/auth';
 
-const Login = () => {
-  const [formData, setFormData] = useState({ email: '', password: '' });
+const Signup = () => {
+  const [formData, setFormData] = useState({ username: '', email: '', password: '' });
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -14,9 +13,8 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, formData);
-      setToken(response.data.token);
-      router.push('/');
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/signup`, formData);
+      router.push('/login');
     } catch (error) {
       console.error(error);
     }
@@ -24,11 +22,12 @@ const Login = () => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <input name="username" onChange={handleChange} placeholder="Username" required />
       <input name="email" type="email" onChange={handleChange} placeholder="Email" required />
       <input name="password" type="password" onChange={handleChange} placeholder="Password" required />
-      <button type="submit">Log In</button>
+      <button type="submit">Sign Up</button>
     </form>
   );
 };
 
-export default Login;
+export default Signup;
